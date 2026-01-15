@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  carbs: 1
+  fat: 1
+  protein: 1
+  salt: 1.5
+  user: one
+
+two:
+  title: MyString
+  description: MyText
+  carbs: 1
+  fat: 1
+  protein: 1
+  salt: 1.5
+  user: two

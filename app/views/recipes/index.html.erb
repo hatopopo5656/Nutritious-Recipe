@@ -1,0 +1,26 @@
+<h1>レシピ一覧</h1>
+
+<h2>カテゴリーで探す</h2>
+<% Category.all.each do |category| %>
+  <%= link_to category.name, recipes_path(category_id: category.id) %> |
+<% end %>
+
+<% if params[:category_id].present? %>
+  <p>現在のカテゴリー: <%= Category.find(params[:category_id]).name %></p>
+<% end %>
+
+
+<%= form_with url: recipes_path, method: :get, local: true do %>
+  <%= text_field_tag :keyword, params[:keyword], placeholder: "レシピを検索" %>
+  <%= submit_tag "検索" %>
+<% end %>
+<%= link_to "一覧に戻る", recipes_path %>
+
+<% @recipes.each do |recipe| %>
+  <div class="recipe-card">
+    <h2><%= link_to recipe.title, recipe %></h2>
+    <p><%= recipe.description.truncate(50) %></p>
+    <p>カテゴリー: <%= recipe.category&.name || "未分類" %></p>
+  
+  </div>
+<% end %>

@@ -1,0 +1,24 @@
+<h1>レシピ編集</h1>
+
+<%= form_with model: @recipe, local: true do |f| %>
+
+  <%= render "form", f: f %>
+
+<h3>現在の画像</h3>
+<% @recipe.images.each do |image| %>
+  <div style="margin-bottom: 10px;">
+    <%= image_tag image.variant(resize_to_limit: [300, 300]) %>
+    <label>
+      <%= check_box_tag "recipe[remove_image_ids][]", image.id %>
+      この画像を削除する
+    </label>
+  </div>
+<% end %>
+
+<h3>画像を追加</h3>
+<%= f.file_field :images, multiple: true, accept: "image/*" %>
+
+<%= f.submit "途中保存（編集画面にとどまる）", name: "stay" %>
+<%= f.submit "投稿する（詳細画面へ）" %>
+
+<% end %>

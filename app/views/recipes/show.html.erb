@@ -1,0 +1,21 @@
+<h1><%= @recipe.title %></h1>
+
+<% @recipe.images.take(3).each do |image| %>
+  <%= image_tag image.variant(resize_to_limit: [300, 300]), class: "recipe-image" %>
+<% end %>
+
+<p>説明:<%= @recipe.description %></p>
+<p>材料:<%= @recipe.grocery %></p>
+
+<ul>
+  <li>糖質: <%= @recipe.carbs %> g</li>
+  <li>脂質: <%= @recipe.fat %> g</li>
+  <li>タンパク質: <%= @recipe.protein %> g</li>
+  <li>塩分: <%= @recipe.salt %> g</li>
+</ul>
+
+<% if current_user&.guest? %>
+  <%= link_to "編集", edit_recipe_path(@recipe) %>
+<% end %>
+
+<%= link_to "一覧に戻る", recipes_path %>
