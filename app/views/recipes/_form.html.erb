@@ -37,11 +37,15 @@
     <%= f.label :category_id, "カテゴリー" %><br>
     <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "選択してください" %>
   </div>
-
   <div>
-    <%= f.label :images, "写真(3枚まで)" %><br>
+    <%= f.label :images, "写真1(3枚まで)" %><br>
     <%= f.file_field :images, multiple: true, accept: "image/*" %>
   </div>
-
-  <%= f.submit "投稿する" %>
-  <%= link_to "やめる", recipes_path %>
+    <div>
+    <%= f.label :images, "写真2(3枚まで)" %><br>
+    <%= f.file_field :images, multiple: true, accept: "image/*" %>
+  </div>
+    <div>
+    <%= f.label :images, "写真3(3枚まで)" %><br>
+    <%= f.file_field :images, multiple: true, accept: "image/*" %>
+  </div>

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users, controllers: {
     sessions: "users/sessions"
   }
@@ -9,7 +8,9 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  resources :recipes
+  resources :recipes do
+    resource :good, only: [:create, :destroy]
+  end
 
   root "recipes#index"
 

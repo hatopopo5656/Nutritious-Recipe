@@ -5,6 +5,10 @@ class Users::SessionsController < Devise::SessionsController
     end
 
     sign_in user
-    redirect_to root_path, notice: "ゲストユーザーとしてログインしました", status: :see_other
+    if params[:return_to].present?
+      redirect_to params[:return_to], notice: "ゲストユーザーとしてログインしました", status: :see_other
+    else
+      redirect_to root_path, notice: "ゲストユーザーとしてログインしました", status: :see_other
+    end
   end
 end

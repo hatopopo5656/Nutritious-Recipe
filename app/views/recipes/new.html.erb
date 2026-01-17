@@ -1,2 +1,13 @@
-<h1>レシピ投稿</h1>
-<%= render "form" %>
+<h1>新しいレシピ作成</h1>
+
+<%= form_with model: @recipe,
+              local: true,
+              html: { multipart: true },
+              data: { turbo: false } do |f| %>
+
+  <%= render "form", f: f %>
+  <%= f.submit "投稿する" %>
+<% end %>
+
+<%= link_to "やめる", recipes_path %>
+

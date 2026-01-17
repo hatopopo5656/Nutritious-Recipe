@@ -5,21 +5,38 @@ class RecipesController < ApplicationController
   def index
     request.format = :html
     @recipes = Recipe.search(params[:keyword])
-
+    @global_new_recipes = Recipe.order(created_at: :desc).limit(5)
+    orders = {}
+    orders[:carbs]   = :desc if params[:carbs] == "1"
+    orders[:fat]     = :desc if params[:fat] == "1"
+    orders[:protein] = :desc if params[:protein] == "1"
+    orders[:salt]    = :desc if params[:salt] == "1"
+    @recipes = @recipes.order(orders) if orders.present?
     if params[:category_id].present?
-    @recipes = @recipes.where(category_id: params[:category_id])
+      @recipes = @recipes.where(category_id: params[:category_id])
+      @popular_recipes = @recipes.left_joins(:goods).group(:id).order("COUNT(goods.id) DESC").limit(10)
+      @new_recipes = @recipes.order(created_at: :desc).limit(10)
+    else
+      @popular_recipes = []
+      @new_recipes = []
+    end
   end
-
-end
+  
   def new
     @recipe = Recipe.new
   end
 
   def create
-    @recipe = Recipe.new(recipe_params)
+    @recipe = current_user.recipes.build(recipe_params.except(:images))
+
+    if recipe_params[:images].present?
+      images = recipe_params[:images].reject(&:blank?)
+      @recipe.images.attach(images)
+    end
     if @recipe.save
       redirect_to @recipe, notice: "レシピを投稿しました"
     else
+      Rails.logger.debug @recipe.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
