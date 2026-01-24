@@ -16,7 +16,8 @@ end
 
   def self.search(keyword)
   if keyword.present?
-    where("title LIKE ? OR description LIKE ?", "%#{keyword}%", "%#{keyword}%")
+    joins(:rich_text_description)
+      .where("title LIKE ? OR action_text_rich_texts.body LIKE ?", "%#{keyword}%", "%#{keyword}%")
   else
     all
   end

@@ -4,24 +4,41 @@ class RecipesController < ApplicationController
   
   def index
     request.format = :html
-    @recipes = Recipe.search(params[:keyword])
-    @global_new_recipes = Recipe.order(created_at: :desc).limit(5)
-    orders = {}
-    orders[:carbs]   = :desc if params[:carbs] == "1"
-    orders[:fat]     = :desc if params[:fat] == "1"
-    orders[:protein] = :desc if params[:protein] == "1"
-    orders[:salt]    = :desc if params[:salt] == "1"
-    @recipes = @recipes.order(orders) if orders.present?
+    @recipes = Recipe.all
     if params[:category_id].present?
       @recipes = @recipes.where(category_id: params[:category_id])
-      @popular_recipes = @recipes.left_joins(:goods).group(:id).order("COUNT(goods.id) DESC").limit(10)
-      @new_recipes = @recipes.order(created_at: :desc).limit(10)
-    else
+    end
+
+    if params[:keyword].present?
+      @recipes = @recipes.search(params[:keyword])
+    end
+
+    orders = {}
+    orders[:carbs]   = :desc if params[:carbs] == "1"
+    orders[:carbs]   = :asc if params[:carbs_low] == "1"
+    orders[:fat]     = :desc if params[:fat] == "1"
+    orders[:fat]     = :asc if params[:fat_low] == "1"
+    orders[:protein] = :desc if params[:protein] == "1"
+    orders[:protein] = :asc if params[:protein_low] == "1"
+    orders[:salt]    = :desc if params[:salt] == "1"
+    orders[:salt]    = :asc if params[:salt_low] == "1"
+
+    @recipes = @recipes.order(orders) if orders.present?
+
+    if params[:category_id].blank?
+      if params[:keyword].blank?
+        @global_new_recipes = Recipe.order(created_at: :desc).limit(5)
+      else
+        @global_new_recipes = []
+      end
       @popular_recipes = []
       @new_recipes = []
+    else
+      @popular_recipes = @recipes.left_joins(:goods).group(:id).order("COUNT(goods.id) DESC").limit(10)
+      @new_recipes = @recipes.order(created_at: :desc).limit(10)
     end
   end
-  
+
   def new
     @recipe = Recipe.new
   end
@@ -81,6 +98,21 @@ class RecipesController < ApplicationController
   end
 end
 
+def all
+  @recipes = Recipe.all
+  @recipes = @recipes.search(params[:keyword]) if params[:keyword].present?
+  orders = {}
+  orders[:carbs]   = :desc if params[:carbs] == "1"
+  orders[:carbs]   = :asc  if params[:carbs_low] == "1"
+  orders[:fat]     = :desc if params[:fat] == "1"
+  orders[:fat]     = :asc  if params[:fat_low] == "1"
+  orders[:protein] = :desc if params[:protein] == "1"
+  orders[:protein] = :asc  if params[:protein_low] == "1"
+  orders[:salt]    = :desc if params[:salt] == "1"
+  orders[:salt]    = :asc  if params[:salt_low] == "1"
+  @recipes = @recipes.order(orders) if orders.present?
+end
+
 private
 def recipe_params
   params.require(:recipe).permit(:title, :description, :carbs, :fat, :protein, :salt, :grocery, :category_id, images: [])
@@ -90,4 +122,5 @@ def require_guest_user
     redirect_to recipes_path, alert: "編集できるのはゲストユーザーのみです"
   end
 end
+
 end

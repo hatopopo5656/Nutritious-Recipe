@@ -7,6 +7,16 @@
 
   <%= render "form", f: f %>
 
+    <div class="form_group">
+    <%= f.label :description, "作り方" %><br>
+    <%= f.text_area :description, class: "tinymce" %>
+  </div>
+  
+  <div class="form_group">
+    <%= f.label :grocery, "材料" %><br>
+    <%= f.text_area :grocery, class: "tinymce" %>
+  </div>
+
   <h3>現在の画像</h3>
   <% @recipe.images.each do |image| %>
     <%= image_tag image.variant(resize_to_limit: [300, 300]) %>
@@ -16,5 +26,10 @@
   <%= f.submit "更新する", name: "stay" %>
   <%= f.submit "投稿する", name: "submit" %>
 <% end %>
+
+<%= link_to "削除する",
+            recipe_path(@recipe),
+            method: :delete,
+            data: { confirm: "本当に削除しますか？" } %>
 
 <%= link_to "やめる", recipes_path %>

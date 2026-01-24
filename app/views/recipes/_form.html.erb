@@ -2,50 +2,42 @@
     <%= f.label :title, "タイトル" %><br>
     <%= f.text_field :title %>
   </div>
-
-  <div>
-    <%= f.label :description, "作り方" %><br>
-    <%= f.text_area :description %>
-  </div>
-
-  <div>
-    <%= f.label :grocery, "材料" %><br>
-    <%= f.text_area :grocery %>
-  </div>
-
+  
   <div>
     <%= f.label :carbs, "糖質(g)" %><br>
     <%= f.number_field :carbs %>
   </div>
-
+  
   <div>
     <%= f.label :fat, "脂質(g)" %><br>
     <%= f.number_field :fat %>
   </div>
-
+  
   <div>
     <%= f.label :protein, "タンパク質(g)" %><br>
     <%= f.number_field :protein %>
   </div>
-
+  
   <div>
     <%= f.label :salt, "塩分(g)" %><br>
     <%= f.number_field :salt, step: 0.1 %>
   </div>
-
+  
   <div>
     <%= f.label :category_id, "カテゴリー" %><br>
     <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "選択してください" %>
   </div>
+  
   <div>
     <%= f.label :images, "写真1(3枚まで)" %><br>
     <%= f.file_field :images, multiple: true, accept: "image/*" %>
   </div>
-    <div>
+  <div>
     <%= f.label :images, "写真2(3枚まで)" %><br>
     <%= f.file_field :images, multiple: true, accept: "image/*" %>
   </div>
-    <div>
+  
+  <div>
     <%= f.label :images, "写真3(3枚まで)" %><br>
     <%= f.file_field :images, multiple: true, accept: "image/*" %>
   </div>

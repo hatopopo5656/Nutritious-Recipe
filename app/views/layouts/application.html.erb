@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="turbo-cache-control" content="no-cache">
     <title><%= content_for(:title) || "Myapp4" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,18 +14,19 @@
     <!-- <link rel="manifest" href="/manifest.json"> -->
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <link rel="apple-touch-icon" href="/icon.png">    
     <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload", media: "all" %>
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
   </head>
 
   <body>
     <nav>
     <% if user_signed_in? %>
-      <%= link_to "レシピ投稿", new_recipe_path %> |
+      <%= link_to "レシピ投稿", new_recipe_path %> 
       <%= button_to "ログアウト", destroy_user_session_path, method: :delete %>
     <% else %>
-      <%= link_to "ゲストログイン", users_guest_sign_in_path(return_to: request.fullpath), data: { turbo_method: :post } %>
+      <%= button_to "ゲストログイン", users_guest_sign_in_path(return_to: request.fullpath), data: { "turbo_method": :post } %>
     <% end %>
   </nav>
 

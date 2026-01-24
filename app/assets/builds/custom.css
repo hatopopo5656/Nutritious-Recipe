@@ -1,0 +1,68 @@
+trix-editor,
+trix-editor .trix-content,
+trix-editor * {
+  font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif !important;
+  font-size: 16px;
+  color: #333;
+}
+
+trix-editor {
+  min-height: 200px !important;
+  display: block;
+}
+
+trix-editor .trix-content {
+  min-height: 180px !important;
+}
+
+.category-links a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 4px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  transition: 0.2s;
+}
+
+.category-links a:hover {
+  background: #ffe4e1;
+  color: #d14b6a;
+}
+
+.recipe-card {
+  background: #fff;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+h2 {
+  border-left: 6px solid #ffb6c1;
+  padding-left: 10px;
+  margin-top: 24px;
+  color: #444;
+}
+
+.sort-box {
+  background: #fafafa;
+  padding: 12px;
+  border-radius: 10px;
+  margin: 16px 0;
+  border: 1px solid #eee;
+}
+.sort-box label {
+  display: block;
+  margin: 4px 0;
+}
+
+body {
+  padding: 20px;
+  font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: #fffdfd;
+}
