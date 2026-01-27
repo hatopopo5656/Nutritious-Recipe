@@ -1,0 +1,18 @@
+ja:
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"
+      long: "%Y年%m月%d日 %H:%M"
+  activerecord:
+    attributes:
+      recipe:
+        title: タイトル
+        description: 作り方
+        grocery: 材料
+        category: カテゴリー
+        category_id: カテゴリー
+        carbs: 糖質
+        fat: 脂質
+        protein: タンパク質
+        salt: 塩分

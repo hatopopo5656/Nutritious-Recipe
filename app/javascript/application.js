@@ -4,6 +4,7 @@ import "controllers"
 
 document.addEventListener("turbo:load", () => {
   tinymce.remove();
+
   tinymce.init({
     selector: '.tinymce',
     language: 'ja',
@@ -14,21 +15,25 @@ document.addEventListener("turbo:load", () => {
     height: 300,
     
     images_upload_url: '/tinymce_assets',
-    images_upload_handler: function (blobInfo, success, failure) {
-      const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-      const formData = new FormData();
-      formData.append('file', blobInfo.blob());
 
-      fetch('/tinymce_assets', {
-        method: 'POST',
-        headers: {
-          'X-CSRF-Token': csrfToken
-        },
-        body: formData
-      })
-      .then(response => response.json())
-      .then(json => success(json.location))
-      .catch(() => failure("アップロードに失敗しました"));
-    }
+    images_upload_handler: function (blobInfo) {
+      return new Promise(function (resolve, reject) {
+        const csrfToken = document
+          .querySelector("meta[name='csrf-token']")
+          .getAttribute("content");
+          
+        const formData = new FormData();
+        formData.append('file', blobInfo.blob());
+        
+        fetch('/tinymce_assets', {
+          method: 'POST',
+          headers: { 'X-CSRF-Token': csrfToken },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => resolve(json.location))
+          .catch(() => reject("アップロードに失敗しました"));
+        });
+      }
+    });
   });
-});

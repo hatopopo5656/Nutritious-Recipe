@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+
   devise_for :users, controllers: {
     sessions: "users/sessions"
   }
+
+  devise_scope :user do
+    post "users/guest_sign_in", to: "users/sessions#guest_sign_in"
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -11,15 +16,10 @@ Rails.application.routes.draw do
   get "recipes/all", to: "recipes#all"
 
   resources :recipes do
-  resource :good, only: [:create, :destroy]
-  end
-
-  root "recipes#index"
-  resources :articles
-
-  devise_scope :user do
-    post "users/guest_sign_in", to: "users/sessions#guest_sign_in"
+    resource :goods, only: [:create, :destroy]
   end
 
   post "/tinymce_assets", to: "tinymce_assets#create"
+
+  root "recipes#index"
 end

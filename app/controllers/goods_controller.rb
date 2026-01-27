@@ -1,15 +1,21 @@
 class GoodsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_recipe
 
   def create
-    recipe = Recipe.find(params[:recipe_id])
-    current_user.goods.create(recipe: recipe)
+    current_user.goods.create(recipe_id: params[:recipe_id])
+    redirect_back fallback_location: recipes_path
+  end
+  
+  def destroy
+    good = current_user.goods.find_by(recipe_id: params[:recipe])
+    good.destroy if good
     redirect_back fallback_location: recipes_path
   end
 
-  def destroy
-    recipe = Recipe.find(params[:recipe_id])
-    current_user.goods.find_by(recipe: recipe)&.destroy
-    redirect_back fallback_location: recipes_path
+  private
+
+  def set_recipe
+    @recipe = Recipe.find(params[:recipe_id])
   end
 end

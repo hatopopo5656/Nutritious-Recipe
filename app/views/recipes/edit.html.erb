@@ -1,35 +1,29 @@
-<h1>レシピ編集</h1>
+<%= tag.meta name: "turbo-visit-control", content: "reload" %>
 
-<%= form_with model: @recipe,
-              local: true,
+<h1 class="form-title">レシピを編集する</h1>
+
+<%= form_with model: @recipe, local: true,
               html: { multipart: true },
               data: { turbo: false } do |f| %>
 
   <%= render "form", f: f %>
 
-    <div class="form_group">
-    <%= f.label :description, "作り方" %><br>
-    <%= f.text_area :description, class: "tinymce" %>
-  </div>
-  
-  <div class="form_group">
-    <%= f.label :grocery, "材料" %><br>
-    <%= f.text_area :grocery, class: "tinymce" %>
+  <div class="form-section">
+    <%= f.label :description, "作り方", class: "form-label" %>
+    <%= f.text_area :description, class: "tinymce form-input" %>
   </div>
 
-  <h3>現在の画像</h3>
-  <% @recipe.images.each do |image| %>
-    <%= image_tag image.variant(resize_to_limit: [300, 300]) %>
-    <%= check_box_tag "recipe[remove_image_ids][]", image.id %> 削除
-  <% end %>
+  <div class="form-section">
+    <%= f.label :grocery, "材料", class: "form-label" %>
+    <%= f.text_area :grocery, class: "tinymce form-input" %>
+  </div>
 
-  <%= f.submit "更新する", name: "stay" %>
-  <%= f.submit "投稿する", name: "submit" %>
+  <div class="submit-buttons">
+    <%= f.submit "投稿する", class: "submit-button" %>
+  </div>
+
 <% end %>
 
-<%= link_to "削除する",
-            recipe_path(@recipe),
-            method: :delete,
-            data: { confirm: "本当に削除しますか？" } %>
-
-<%= link_to "やめる", recipes_path %>
+<div class="form-footer">
+  <%= link_to "やめる", recipes_path, class: "cancel-link" %>
+</div>

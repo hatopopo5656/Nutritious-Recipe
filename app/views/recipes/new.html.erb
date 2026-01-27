@@ -1,25 +1,31 @@
 <%= tag.meta name: "turbo-visit-control", content: "reload" %>
-<h1>新しいレシピ作成</h1>
+
+<h1 class="form-title">新しいレシピ作成</h1>
 
 <%= form_with model: @recipe,
               local: true,
               html: { multipart: true },
               data: { turbo: false } do |f| %>
-  
-  <div class="form_group">
-    <%= f.label :description, "作り方" %><br>
-    <%= f.text_area :description, class: "tinymce" %>
-  </div>
-  
-  <div class="form_group">
-    <%= f.label :grocery, "材料" %><br>
-    <%= f.text_area :grocery, class: "tinymce" %>
-  </div>
 
   <%= render "form", f: f %>
 
-  <%= f.submit "投稿する" %>
+  <div class="form-section">
+    <%= f.label :description, "作り方", class: "form-label" %>
+    <%= f.text_area :description, class: "tinymce form-input" %>
+  </div>
+
+  <div class="form-section">
+    <%= f.label :grocery, "材料", class: "form-label" %>
+    <%= f.text_area :grocery, class: "tinymce form-input" %>
+  </div>
+
+  <div class="submit-buttons">
+    <%= f.submit "投稿する", class: "submit-button" %>
+  </div>
+  
 <% end %>
 
-<%= link_to "やめる", recipes_path %>
+<div class="form-footer">
+  <%= link_to "やめる", recipes_path, class: "cancel-link" %>
+</div>
 

@@ -1,58 +1,57 @@
 <h2>すべてのレシピ</h2>
 
-<%= form_with url: recipes_all_path, method: :get, local: true do %>
-  <%= text_field_tag :keyword, params[:keyword], placeholder: "レシピを検索" %>
-  <%= submit_tag "検索" %>
-<% end %>
+<div class="search_form">
+  <%= form_with url: recipes_all_path, method: :get, local: true do %>
+    <%= text_field_tag :keyword, params[:keyword], placeholder: "レシピを検索" %>
+    <%= submit_tag "検索" %>
+  <% end %>
+</div>
+
 <%= link_to "TOPに戻る", recipes_path %>
 
 <h2>栄養素で並び替え</h2>
-<%= form_with url: recipes_all_path, method: :get, local: true do %>
-  <label>
-    <%= check_box_tag :carbs, "1", params[:carbs] == "1" %>
-    糖質が高い順
-  </label>
-  <label>
-  <%= check_box_tag :carbs_low, "1", params[:carbs_low] == "1" %>
-  糖質が低い順
-  </label>
-  <label>
-  <%= check_box_tag :fat, "1", params[:fat] == "1" %>
-    脂質が高い順
-  </label>
-  <label>
-  <%= check_box_tag :fat_low, "1", params[:fat_low] == "1" %>
-    脂質が低い順
-  </label>
-  <label>
-  <%= check_box_tag :protein, "1", params[:protein] == "1" %>
-    タンパク質が高い順
-  </label>
-  <label>
-  <%= check_box_tag :protein_low, "1", params[:protein_low] == "1" %>
-    タンパク質が低い順
-  </label>
-  <label>
-  <%= check_box_tag :salt, "1", params[:salt] == "1" %>
-    塩分が高い順
-  </label>
-  <label>
-  <%= check_box_tag :salt_low, "1", params[:salt_low] == "1" %>
-    塩分が低い順
-  </label>
+
+<%= form_with url: recipes_path, method: :get, local: true do %>
+  <%= hidden_field_tag :category_id, params[:category_id] %>
+  <%= hidden_field_tag :keyword, params[:keyword] %>
+  
+  <div class="sort-container">
+    
+    <div class="sort-high">
+      <label><%= check_box_tag :carbs, "1", params[:carbs] == "1" %> 糖質が高い順 </label>
+      <label><%= check_box_tag :fat, "1", params[:fat] == "1" %> 脂質が高い順 </label>
+      <label><%= check_box_tag :protein, "1", params[:protein] == "1" %> タンパク質が高い順 </label>
+      <label><%= check_box_tag :salt, "1", params[:salt] == "1" %> 塩分が高い順 </label>
+    </div>
+
+    <div class="sort-low">
+      <label><%= check_box_tag :carbs_low, "1", params[:carbs_low] == "1" %> 糖質が低い順 </label>
+      <label><%= check_box_tag :fat_low, "1", params[:fat_low] == "1" %> 脂質が低い順 </label>
+      <label><%= check_box_tag :protein_low, "1", params[:protein_low] == "1" %> タンパク質が低い順 </label>
+      <label><%= check_box_tag :salt_low, "1", params[:salt_low] == "1" %> 塩分が低い順 </label>
+    </div>
+
+  </div>
+  
   <%= submit_tag "並び替え" %>
 <% end %>
 
 <h2>レシピ一覧</h2>
-<% @recipes.each do |recipe| %>
-  <div class="recipe-card">
-    <% if recipe.images.attached? %>
-      <%= image_tag recipe.images.first, size: "100x100" %>
-    <% end %>
-    <h3><%= link_to recipe.title, recipe %></h3>
-    <p><%= strip_tags(recipe.description.to_s).truncate(50) %></p>
-    <p>Good数: <%= recipe.goods.count %></p>
-  </div>
-  <% end %>
 
+<div class="recipe-list">
+  <% @recipes.each do |recipe| %>
+    <div class="recipe-card">
+      <% if recipe.images.attached? %>
+        <%= image_tag recipe.images.first, size: "100x100" %>
+      <% end %>
+      
+      <h3><%= link_to recipe.title, recipe %></h3>
+      <p><%= strip_tags(recipe.description.to_s).truncate(50) %></p>
+      <p>Good数: <%= recipe.goods.count %></p>
+    </div>
+  <% end %>
+</div>
+
+<div>
   <%= link_to "もとに戻る", recipes_path %>
+</div>

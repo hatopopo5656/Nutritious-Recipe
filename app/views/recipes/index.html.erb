@@ -1,135 +1,172 @@
-
-<h1>レシピ一覧</h1>
-
-<h2>カテゴリーで探す</h2>
+<h2>制限別カテゴリ</h2>
 <div class="category-links">
-  <%= link_to"TOP", recipes_path %>
+  <%= link_to "TOP", recipes_path %>
   <% Category.all.each do |category| %>
     <%= link_to category.name, recipes_path(category_id: category.id) %>
   <% end %>
 </div>
 
-<% if params[:category_id].present? %>
+<% if params[:category_id].present? && Category.exists?(params[:category_id]) %>
+  <p class="current-category">
+    現在のカテゴリー: <%= Category.find(params[:category_id]).name %>
+  </p>
 
-<h2>栄養素で並び替え</h2>
-<%= form_with url: recipes_path, method: :get, local: true do %>
-  <%= hidden_field_tag :category_id, params[:category_id] %>
-  <%= hidden_field_tag :keyword, params[:keyword] %>
-  
-  <label>
-    <%= check_box_tag :carbs, "1", params[:carbs] == "1" %>
-    糖質が高い順
-  </label>
-  <label>
-  <%= check_box_tag :carbs_low, "1", params[:carbs_low] == "1" %>
-  糖質が低い順
-  </label>
-  <label>
-  <%= check_box_tag :fat, "1", params[:fat] == "1" %>
-    脂質が高い順
-  </label>
-  <label>
-  <%= check_box_tag :fat_low, "1", params[:fat_low] == "1" %>
-    脂質が低い順
-  </label>
-  <label>
-  <%= check_box_tag :protein, "1", params[:protein] == "1" %>
-    タンパク質が高い順
-  </label>
-  <label>
-  <%= check_box_tag :protein_low, "1", params[:protein_low] == "1" %>
-    タンパク質が低い順
-  </label>
-  <label>
-  <%= check_box_tag :salt, "1", params[:salt] == "1" %>
-    塩分が高い順
-  </label>
-  <label>
-  <%= check_box_tag :salt_low, "1", params[:salt_low] == "1" %>
-    塩分が低い順
-  </label>
-  <%= submit_tag "並び替え" %>
+  <h2>栄養素で並び替え</h2>
+  <%= form_with url: recipes_path, method: :get, local: true do %>
+    <%= hidden_field_tag :category_id, params[:category_id] %>
+    <%= hidden_field_tag :keyword, params[:keyword] %>
 
-<% end %>
+    <div class="sort-container">
+      <div class="sort-high">
+        <label><%= check_box_tag :carbs, "1", params[:carbs] == "1" %> 糖質が高い順</label>
+        <label><%= check_box_tag :fat, "1", params[:fat] == "1" %> 脂質が高い順</label>
+        <label><%= check_box_tag :protein, "1", params[:protein] == "1" %> タンパク質が高い順</label>
+        <label><%= check_box_tag :salt, "1", params[:salt] == "1" %> 塩分が高い順</label>
+      </div>
 
-<p>現在のカテゴリー: <%= Category.find(params[:category_id]).name %></p>
-<% end %>
-
-<%= form_with url: recipes_path, method: :get, local: true do %>
-  <%= hidden_field_tag :category_id, params[:category_id] %>
-  <%= text_field_tag :keyword, params[:keyword], placeholder: "レシピを検索" %>
-  <%= submit_tag "検索" %>
-<% end %>
-
-
-
-<% if params[:category_id].blank? %>
-  <h2>新着レシピ</h2>
-  <% @global_new_recipes.each do |recipe| %>
-    <div class="recipe-card">
-      <% if recipe.images.attached? %>
-        <%= image_tag recipe.images.first, size: "100x100" %>
-      <% end %>
-      <h3><%= link_to recipe.title, recipe %></h3>
-      <p>投稿日: <%= recipe.created_at.strftime("%Y-%m-%d") %></p>
+      <div class="sort-low">
+        <label><%= check_box_tag :carbs_low, "1", params[:carbs_low] == "1" %> 糖質が低い順</label>
+        <label><%= check_box_tag :fat_low, "1", params[:fat_low] == "1" %> 脂質が低い順</label>
+        <label><%= check_box_tag :protein_low, "1", params[:protein_low] == "1" %> タンパク質が低い順</label>
+        <label><%= check_box_tag :salt_low, "1", params[:salt_low] == "1" %> 塩分が低い順</label>
+      </div>
     </div>
+
+    <%= submit_tag "並び替え" %>
   <% end %>
 <% end %>
 
-
-
-<% if params[:category_id].present? %>
-
-<h2>このカテゴリのレシピ一覧</h2>
-<% @recipes.each do |recipe| %>
-  <div class="recipe-card">
-    <% if recipe.images.attached? %>
-      <%= image_tag recipe.images.first, size: "100x100" %>
-    <% end %>
-    <h3><%= link_to recipe.title, recipe %></h3>
-    <p><%= strip_tags(recipe.description.to_s).truncate(50) %></p>
-    <p>Good数: <%= recipe.goods.count %></p>
-  </div>
-<% end %>
-<hr>
-<h2>人気レシピ（Goodが多い順）</h2>
-<% @popular_recipes.each do |recipe| %>
-  <div class="recipe-card">
-    <% if recipe.images.attached? %>
-      <%= image_tag recipe.images.first, size: "100x100" %>
-    <% end %>
-    <h3><%= link_to recipe.title, recipe %></h3>
-    <p>Good数: <%= recipe.goods.count %></p>
-  </div>
-<% end %>
-<hr>
-<h2>新着レシピ（新しい順）</h2>
-<% @new_recipes.each do |recipe| %>
-  <div class="recipe-card">
-    <% if recipe.images.attached? %>
-      <%= image_tag recipe.images.first, size: "100x100" %>
-    <% end %>
-    <h3><%= link_to recipe.title, recipe %></h3>
-    <p>投稿日: <%= recipe.created_at.strftime("%Y-%m-%d") %></p>
-  </div>
-<% end %>
-<% end %>
+<div class="search_form">
+  <%= form_with url: recipes_path, method: :get, local: true do %>
+    <%= hidden_field_tag :category_id, params[:category_id] %>
+    <%= text_field_tag :keyword, params[:keyword], placeholder: "レシピを検索してみる?" %>
+    <%= submit_tag "検索" %>
+  <% end %>
+</div>
 
 <% if params[:keyword].present? %>
+
   <h2>検索結果</h2>
-  <% @recipes.each do |recipe| %>
-    <div class="recipe-card">
-      <% if recipe.images.attached? %>
-        <%= image_tag recipe.images.first, size: "100x100" %>
+  <div class="recipe-list">
+    <% @recipes.each do |recipe| %>
+      <div class="recipe-card">
+        <%= link_to recipe_path(recipe), class: "recipe-card-link" do %>
+          <% if recipe.images.attached? %>
+            <%= image_tag recipe.images.first, size: "100x100" %>
+          <% end %>
+          <h3><%= recipe.title %></h3>
+          <p>カテゴリ: <%= recipe.category&.name || "未分類" %></p>
+          <p>Good数: <%= recipe.goods.count %></p>
+          <p>投稿日: <%= recipe.created_at.strftime("%Y年%m月%d日") %></p>
+        <% end %>
+
+        <% liked = recipe.goods.exists?(user: current_user) %>
+        <%= button_to recipe_goods_path(recipe), method: :post, data: { turbo: false }, class: "good-button" do %>
+          <span class="<%= liked ? 'liked' : '' %>">Goodする</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= link_to "もとに戻る", request.referer %>
+
+<% else %>
+
+  <% if params[:category_id].blank? %>
+    <h2>新着レシピ</h2>
+    <div class="recipe-list">
+      <% @global_new_recipes.each do |recipe| %>
+        <div class="recipe-card">
+          <%= link_to recipe_path(recipe), class: "recipe-card-link" do %>
+            <% if recipe.images.attached? %>
+              <%= image_tag recipe.images.first, size: "100x100" %>
+            <% end %>
+            <h3><%= recipe.title %></h3>
+            <p>カテゴリ: <%= recipe.category&.name || "未分類" %></p>
+            <p>Good数: <%= recipe.goods.count %></p>
+            <p>投稿日: <%= recipe.created_at.strftime("%Y年%m月%d日") %></p>
+          <% end %>
+
+          <% liked = recipe.goods.exists?(user: current_user) %>
+          <%= button_to recipe_goods_path(recipe), method: :post, data: { turbo: false }, class: "good-button" do %>
+            <span class="<%= liked ? 'liked' : '' %>">Goodする</span>
+          <% end %>
+        </div>
       <% end %>
-      <h3><%= link_to recipe.title, recipe %></h3>
-      <p><%= strip_tags(recipe.description.to_s).truncate(50) %></p>
     </div>
   <% end %>
+
+  <% if params[:category_id].present? %>
+    <h2>このカテゴリのレシピ一覧</h2>
+    <div class="recipe-list">
+      <% @recipes.each do |recipe| %>
+        <div class="recipe-card">
+          <%= link_to recipe_path(recipe), class: "recipe-card-link" do %>
+            <% if recipe.images.attached? %>
+              <%= image_tag recipe.images.first, size: "100x100" %>
+            <% end %>
+            <h3><%= recipe.title %></h3>
+            <p>カテゴリ: <%= recipe.category&.name || "未分類" %></p>
+            <p>Good数: <%= recipe.goods.count %></p>
+            <p>投稿日: <%= recipe.created_at.strftime("%Y年%m月%d日") %></p>
+          <% end %>
+
+          <% liked = recipe.goods.exists?(user: current_user) %>
+          <%= button_to recipe_goods_path(recipe), method: :post, data: { turbo: false }, class: "good-button" do %>
+            <span class="<%= liked ? 'liked' : '' %>">Goodする</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <h2>人気レシピ（Goodが多い順）</h2>
+    <div class="recipe-list">
+      <% @popular_recipes.each do |recipe| %>
+        <div class="recipe-card">
+          <%= link_to recipe_path(recipe), class: "recipe-card-link" do %>
+            <% if recipe.images.attached? %>
+              <%= image_tag recipe.images.first, size: "100x100" %>
+            <% end %>
+            <h3><%= recipe.title %></h3>
+            <p>カテゴリ: <%= recipe.category&.name || "未分類" %></p>
+            <p>Good数: <%= recipe.goods.count %></p>
+            <p>投稿日: <%= recipe.created_at.strftime("%Y年%m月%d日") %></p>
+          <% end %>
+
+          <% liked = recipe.goods.exists?(user: current_user) %>
+          <%= button_to recipe_goods_path(recipe), method: :post, data: { turbo: false }, class: "good-button" do %>
+            <span class="<%= liked ? 'liked' : '' %>">Goodする</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <h2>新着レシピ（新しい順）</h2>
+    <div class="recipe-list">
+      <% @new_recipes.each do |recipe| %>
+        <div class="recipe-card">
+          <%= link_to recipe_path(recipe), class: "recipe-card-link" do %>
+            <% if recipe.images.attached? %>
+              <%= image_tag recipe.images.first, size: "100x100" %>
+            <% end %>
+            <h3><%= recipe.title %></h3>
+            <p>カテゴリ: <%= recipe.category&.name || "未分類" %></p>
+            <p>Good数: <%= recipe.goods.count %></p>
+            <p>投稿日: <%= recipe.created_at.strftime("%Y年%m月%d日") %></p>
+          <% end %>
+
+          <% liked = recipe.goods.exists?(user: current_user) %>
+          <%= button_to recipe_goods_path(recipe), method: :post, data: { turbo: false }, class: "good-button" do %>
+            <span class="<%= liked ? 'liked' : '' %>">Goodする</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
 <% end %>
 
 <% if params[:category_id].blank? %>
   <%= link_to "すべてのレシピを見る", "/recipes/all" %>
 <% end %>
-
 

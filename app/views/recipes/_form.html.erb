@@ -1,43 +1,45 @@
-  <div>
-    <%= f.label :title, "タイトル" %><br>
-    <%= f.text_field :title %>
+<% if @recipe.errors.any? %>
+  <div class="error-messages">
+    <h3>入力内容にエラーがあります</h3>
+    <ul>
+      <% @recipe.errors.full_messages.each do |msg| %>
+        <li>※ <%= msg %></li>
+      <% end %>
+    </ul>
   </div>
+<% end %>
   
-  <div>
-    <%= f.label :carbs, "糖質(g)" %><br>
-    <%= f.number_field :carbs %>
-  </div>
-  
-  <div>
-    <%= f.label :fat, "脂質(g)" %><br>
-    <%= f.number_field :fat %>
-  </div>
-  
-  <div>
-    <%= f.label :protein, "タンパク質(g)" %><br>
-    <%= f.number_field :protein %>
-  </div>
-  
-  <div>
-    <%= f.label :salt, "塩分(g)" %><br>
-    <%= f.number_field :salt, step: 0.1 %>
-  </div>
-  
-  <div>
-    <%= f.label :category_id, "カテゴリー" %><br>
-    <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "選択してください" %>
-  </div>
-  
-  <div>
-    <%= f.label :images, "写真1(3枚まで)" %><br>
-    <%= f.file_field :images, multiple: true, accept: "image/*" %>
-  </div>
-  <div>
-    <%= f.label :images, "写真2(3枚まで)" %><br>
-    <%= f.file_field :images, multiple: true, accept: "image/*" %>
-  </div>
-  
-  <div>
-    <%= f.label :images, "写真3(3枚まで)" %><br>
-    <%= f.file_field :images, multiple: true, accept: "image/*" %>
-  </div>
+<div class="form-field">
+  <%= f.label :title, "タイトル" %><br>
+  <%= f.text_field :title %>
+</div>
+
+<div class="form-field">
+  <%= f.label :carbs, "糖質(g)" %><br>
+  <%= f.number_field :carbs, step:0.01 %>
+</div>
+
+<div class="form-field">
+  <%= f.label :fat, "脂質(g)" %><br>
+  <%= f.number_field :fat, step:0.01 %>
+</div>
+
+<div class="form-field">
+  <%= f.label :protein, "タンパク質(g)" %><br>
+  <%= f.number_field :protein, step:0.01 %>
+</div>
+
+<div class="form-field">
+  <%= f.label :salt, "塩分(g)" %><br>
+  <%= f.number_field :salt, step: 0.01 %>
+</div>
+
+<div class="form-field">
+  <%= f.label :category_id, "カテゴリー" %><br>
+  <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "選択してください" %>
+</div>
+
+<div class="form-field">
+  <%= f.label :images, "メイン画像" %><br>
+  <%= f.file_field :images, accept: "image/*" %>
+</div>
