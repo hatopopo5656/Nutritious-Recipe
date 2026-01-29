@@ -100,14 +100,11 @@ h2 {
   font-weight: bold;
 }
 
-
-/*-----------------------------------------------*/
 .recipe_description,
 .recipe_grocery,
 .nutrition_list {
   text-align: left;
  }
-/*-----------------------------------------------*/
 
 .recipe-card-link {
   display: block; 
