@@ -43,30 +43,18 @@ class RecipesController < ApplicationController
   end
 
   def create
-    @recipe = current_user.recipes.build(recipe_params.except(:images))
-
-    if recipe_params[:images].present?
-      images = recipe_params[:images].reject(&:blank?)
-      @recipe.images.attach(images)
-    end
+    @recipe = current_user.recipes.build(recipe_params)
 
     if @recipe.save
       redirect_to @recipe, notice: "レシピを投稿しました"
-    else
+  else
       Rails.logger.debug @recipe.errors.full_messages
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    if @recipe.update(recipe_params.except(:images))
-      
-      @recipe.images.attach(recipe_params[:images]) if recipe_params[:images].present?
-
-      if params[:recipe][:remove_image_ids].present?
-        @recipe.images.where(id: params[:recipe][:remove_image_ids]).each(&:purge)
-      end
-
+    if @recipe.update(recipe_params)
       if params[:stay].present?
         redirect_to edit_recipe_path(@recipe), notice: "レシピを更新しました"
       else
@@ -112,7 +100,7 @@ class RecipesController < ApplicationController
   def recipe_params
     params.require(:recipe).permit(
       :title, :description, :carbs, :fat, :protein, :salt,
-      :grocery, :category_id, images: []
+      :grocery, :category_id, :image
     )
   end
   

@@ -2,7 +2,7 @@ class Recipe < ApplicationRecord
   belongs_to :user
   belongs_to :category, optional: true
 
-  has_many_attached :images
+  has_one_attached :image
   has_many :goods, dependent: :destroy
   has_many :good_users, through: :goods, source: :user
 
@@ -14,15 +14,6 @@ class Recipe < ApplicationRecord
   validates :carbs, :fat, :protein, :salt,
             numericality: { allow_nil: true, greater_than_or_equal_to: 0 },
             format: { with: /\A\d+(\.\d{1})?\z/, message: "を入れてください" }
-
-  validate :images_limit
-
-  def images_limit
-    real_images = images.attachments.reject { |a| a.blob.nil? }
-    if real_images.size > 3
-      errors.add(:images, "は3枚までアップロードできます")
-    end
-  end
 
   def self.search(keyword)
     if keyword.present?

@@ -1,23 +1,24 @@
-<h1><%= @recipe.title %></h1>
+<h1 class="recipe-title"><%= @recipe.title %></h1>
 
-<div class="recipe_images">
-  <% @recipe.images.take(3).each do |image| %>
-    <%= image_tag image.variant(resize_to_limit: [300, 300]), class: "recipe-image" %>
+<div class="recipe_image">
+  <% if @recipe.image.attached? %>
+    <%= image_tag @recipe.image.variant(resize_to_limit: [300, 300]), class: "recipe-image" %>
   <% end %>
 </div>
 
 <p>カテゴリー: <%= @recipe.category.name %></p>
 
-<h2>作り方</h2>
-<div class="recipe_description">
-  <%= (@recipe.description || "").html_safe %>
-</div>
-
-<h2>材料:</h2>
 <div class="recipe_grocery">
+<p class="recipe_grocery_title">材料</p>
   <%= (@recipe.grocery || "").html_safe %>
 </div>
 
+<div class="recipe_description">
+<p class="recipe_description_title">作り方</p>
+  <%= (@recipe.description || "").html_safe %>
+</div>
+
+<p class="nutrition_list_title">栄養成分</p>
 <ul class="nutrition_list">
   <li>糖質: <%= @recipe.carbs %> g</li>
   <li>脂質: <%= @recipe.fat %> g</li>
@@ -31,4 +32,4 @@
   <%= link_to "編集", edit_recipe_path(@recipe) %>
 <% end %>
 
-<%= link_to "もとに戻る", request.referer %>
+<%= link_to "もとに戻る", recipes_path %>
