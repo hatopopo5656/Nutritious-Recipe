@@ -365,6 +365,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
+  net-protocol
   pg
   propshaft
   puma (>= 5.0)
