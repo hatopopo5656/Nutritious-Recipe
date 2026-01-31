@@ -56,10 +56,10 @@ group :test do
   gem "selenium-webdriver"
 end
 
-  gem "devise"
-  gem "devise-i18n"
-  gem "rails-i18n"
-  
-  gem "trix"
+gem "devise"
+gem "devise-i18n"
+gem "rails-i18n"
 
-  gem "net-protocol"
+gem "trix"
+
+gem "net-protocol"
