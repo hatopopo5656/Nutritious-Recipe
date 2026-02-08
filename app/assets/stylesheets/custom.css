@@ -93,3 +93,62 @@ textarea {
   color: #d9534f;
   font-weight: bold;
 }
+
+@media (max-width: 600px) {
+
+  .form-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .form-input,
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    max-width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .nutrient-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
+  .image-list {
+    gap: 12px;
+  }
+
+  .image-item {
+    width: 45%;
+  }
+
+  .image-preview {
+    width: 100%;
+    height: auto;
+  }
+
+  .submit-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .cancel-link,
+  .danger-link {
+    text-align: center;
+    display: block;
+  }
+}
