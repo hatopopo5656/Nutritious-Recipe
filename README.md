@@ -1,24 +1,15 @@
-# README
+# 食事制限レシピ
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+食事制限のある人たちが美味しいものを作って食べるためのレシピサイト
 
-Things you may want to cover:
+## サービス概要
+## サービスURL
+(https://nutritious-recipe.onrender.com/)
+## サービスイメージ
 
-* Ruby version
+## 開発背景
+## 機能
+## 環境
+## 技術
 
-* System dependencies
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
